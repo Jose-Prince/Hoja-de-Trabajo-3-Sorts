@@ -84,5 +84,37 @@ public class Sorts<T> {
             }
         }
     }
+
+    /**
+     * Implementación de RadixSort
+     * Implementación de javaStructures
+     * @param myArray
+     * @param d
+     */
+    public void radixSort(T[] myArray, int d) {
+        int i,j;
+        int value;
+
+        Vector<Vector<Integer>> bucket = new Vector<Vector<Integer>>(10);
+        bucket.setSize(10);
+
+        for (j = 0; j < 10; j++) bucket.set(j ,new Vector<Integer>());
+
+        int n = myArray.length;
+        for (i = 0; i < n; i++){
+            value = myArray[i];
+            j = digit(value, d);
+            buckte.get(j).add(value);
+        }
+
+        i = n;
+        for (j = 9; j >= 0; j--) {
+            while(!bucket.get(j).isEmpty()){
+                i--;
+                value = bucket.get(j).remove();
+                myArray[i] = value;
+            }
+        }
+    }
 }
 
