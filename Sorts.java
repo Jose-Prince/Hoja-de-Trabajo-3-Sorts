@@ -6,44 +6,36 @@ public class Sorts<T> {
     
     /**
      * Implementación de QuickSort
-     * Impelmentación obtenida del repositorio de GitHub
-     * @param myArray
-     * @param inf
-     * @param sup
-     * @param myCompare
+     * Impelmentación obtenida de Baeldung.com 
      */
-    public void quickSort(T[] myArray, int inf, int sup, Comparator<T> myCompare) {
-        int i = inf - 1;
-        int j = sup;
-        boolean flag = true;
-        T temp;
-        
-        
-        if (inf >= sup) {
-            return;
+    public void quickSort(Integer[] myArray, int begin, int end){
+        if (begin < end){
+            int partitionIndex = partition(myArray, begin, end);
+
+            quickSort(myArray, begin, partitionIndex-1);
+            quickSort(myArray, partitionIndex+1, end);
         }
-        
-        T elem_div = myArray[sup];
-        
-        
-        while (flag) {
-            while(myCompare.compare(myArray[++i], elem_div) < 0); //Move the index i until it finds an element bigger than elem_div
-            while((myCompare.compare(myArray[--j], elem_div) > 0)  && (j > inf)); //Move the index j until it finds element smaller than elem_div
-            
-            if (i < j) {
-                temp = myArray[i];
+    }
+
+    public int partition(Integer[] myArray, int begin, int end){
+        int pivot = myArray[end];
+        int i = (begin-1);
+
+        for (int j = begin; j < end; j++){
+            if (myArray[j] <= pivot){
+                i++;
+
+                int swapTemp = myArray[i];
                 myArray[i] = myArray[j];
-                myArray[j] = temp;
-            } else {
-                flag = false;
+                myArray[j] = swapTemp;
             }
         }
-        
-        temp = myArray[i];
-        myArray[i] = myArray[sup];
-        myArray[sup] = temp;
-        quickSort(myArray, inf, i - 1, myCompare);
-        quickSort(myArray, i + 1, sup, myCompare);
+
+        int swapTemp = myArray[i+1];
+        myArray[i+1] = myArray[end];
+        myArray[end] = swapTemp;
+
+        return i + 1;
     }
 
     /**
@@ -51,15 +43,15 @@ public class Sorts<T> {
      * Implementación obtenida de OpenGenus IQ
      * @param myArray
      */
-    public void gnomeSort(T[] myArray){
+    public void gnomeSort(Integer[] myArray){
         int i = 1;
         int n = myArray.length;
 
         while (i < n){
-            if (i == 0 || Integer.valueOf((String) myArray[i - 1]) <= Integer.valueOf((String) myArray[i])){
+            if (i == 0 || myArray[i - 1] <= myArray[i]){
                 i++;
             } else {
-                T tmp = myArray[i];
+                int tmp = myArray[i];
                 myArray[i] = myArray[i - 1];
                 myArray[--i] = tmp;
             }
@@ -68,39 +60,98 @@ public class Sorts<T> {
 
     /**
      * Implementación de MergeSort
-     * Implementación obtenida de JavaStructures
-     * @param myArray
-     * @param temp
-     * @param low
-     * @param middle
-     * @param high
+     * Implementación obtenida de geeksforgeeks.org
      */
-    public void mergeSort(T[] myArray, T[] temp, int low, int middle, int high) {
-        int ri = low;
-        int ti = low;
-        int di = middle;
+    public static void merge(int[] left_arr,int[] right_arr, int[] arr,int left_size, int right_size) {
+        int i=0,l=0,r=0;
 
-        while (ti < middle && di <= high){
-            if (Integer.valueOf((String) myArray[di]) < Integer.valueOf((String) myArray[ti])){
-                myArray[ri++] = myArray[di++];
+        while(l<left_size && r<right_size){
+            if(left_arr[l]<right_arr[r]){
+                arr[i++]=left_arr[l++];
             } else {
-                myArray[ri++] = temp[ti++];
+                arr[i++]= right_arr[r++];
             }
         }
+        while(l<left_size){
+            arr[i++] = left_arr[l++];
+        }
+        while(r<right_size){
+            arr[i++] = right_arr[r++];
+        }
     }
+
+    public static void mergeSort(int[] arr, int len){
+        if (len < 2){return;}
+
+        int mid = len / 2;
+        int[] left_arr = new int[mid];
+        int[] right_arr = new int[len-mid];
+
+        int k = 0;
+        for(int i = 0;i<len;++i){
+            if(i<mid){
+                left_arr[i] = arr[i];
+            } else {
+                right_arr[k] = arr[i];
+                k = k + 1;
+            }
+        }
+
+        mergeSort(left_arr, mid);
+        mergeSort(right_arr, len-mid);
+
+        merge(left_arr,right_arr,arr,mid,len-mid);
+    }
+    // public void merge(Integer[] myArray, Integer[] l, Integer[] r, int left, int right){
+    //     int i = 0, j = 0, k = 0;
+    //     while (i < left && j < right){
+    //         if (l[i] <= r[j]) {
+    //             myArray[k++] = l[i++];
+    //         } else {
+    //             myArray[k++] = l[i++];
+    //         }
+    //     }
+
+    //     while (i < left) {
+    //         myArray[k++] = l[i++];
+    //     }
+    //     while (j < right) {
+    //         myArray[k++] = r[j++];
+    //     }
+    // }
+
+    // public void mergeSort(Integer[] myArray, int n){
+    //     if (n < 2){
+    //         return;
+    //     }
+    //     int mid = n / 2;
+    //     Integer[] l = new Integer[mid];
+    //     Integer[] r = new Integer[n - mid];
+
+    //     for (int i = 0; i < mid; i++){
+    //         l[i] = myArray[i];
+    //     }
+    //     for (int i = mid; i < n; i++){
+    //         r[i - mid] = myArray[i];
+    //     }
+    //     mergeSort(l, mid);
+    //     mergeSort(r, n - mid);
+
+    //     merge(myArray, l, r, mid, n - mid);
+    // }
 
     /**
      * Implementación de RadixSort
      * Implementación obtenida de Programiz.com
      */
-    public void countingSort(T[] myArray, int size, int place){
+    public void countingSort(Integer[] myArray, int size, int place){
         int array;
         int i;
         int[] output = new int[size + 1];
-        int max = Integer.valueOf((String) myArray[0]);
+        int max = myArray[0];
         for (i = 1; i < size; i++) {
-            if (Integer.valueOf((String) myArray[i]) > max)
-                max = Integer.valueOf((String) myArray[i]);
+            if (myArray[i] > max)
+                max = myArray[i];
         }
 
         int[] count = new int[max + 1];
@@ -109,27 +160,27 @@ public class Sorts<T> {
             count[i] = 0;
 
         for (i = 0; i < size; i++)
-            count[(Integer.valueOf((String) myArray[i])/place) % 10]++;
+            count[(myArray[i]/place) % 10]++;
         
         for (i = size - 1; i >= 0; i--) {
-            output[count[(Integer.valueOf((String) myArray[i]) / place) % 10] - 1] = Integer.valueOf((String) myArray[i]);
-            count[(Integer.valueOf((String) myArray[i])/ place) % 10]--;
+            output[count[(myArray[i] / place) % 10] - 1] = myArray[i];
+            count[(myArray[i]/ place) % 10]--;
         }
 
         for (i= 0; i < size; i++)
-            array = Integer.valueOf((String) myArray[i]);
+            array = myArray[i];
             array = output[i];
     }
 
-    public int getMax(T[] myArray, int n) {
-        int max = Integer.valueOf((String) myArray[0]);
+    public int getMax(Integer[] myArray, int n) {
+        int max = myArray[0];
         for (int i = 1; i < n; i++)
-            if (Integer.valueOf((String) myArray[i]) > max)
-                max = Integer.valueOf((String) myArray[i]);
+            if (myArray[i] > max)
+                max = myArray[i];
             return max;
     }
 
-    public void radixSort(T[] myArray, int size){
+    public void radixSort(Integer[] myArray, int size){
         int max = getMax(myArray, size);
 
         for (int place = 1; max / place > 0; place *= 10)
@@ -142,16 +193,16 @@ public class Sorts<T> {
      * Implementación obtenida de edureka.co
      * 
      */
-    public void selectionSort(T[] myArray){
+    public void selectionSort(Integer[] myArray){
         int n = myArray.length;
         for (int i = 0; i < n-1; i++){
             int min_element = i;
             for (int j = i+1; j< n; j++){
-                if (Integer.valueOf((String) myArray[j]) < Integer.valueOf((String) myArray[min_element]))
+                if (myArray[j] < myArray[min_element])
                     min_element = j;
                 
-                int array = Integer.valueOf((String) myArray[min_element]); 
-                int Iarray = Integer.valueOf((String) myArray[i]);  
+                int array = myArray[min_element]; 
+                int Iarray = myArray[i];  
                 int temp = array;
                 array = Iarray;
                 Iarray = temp;
