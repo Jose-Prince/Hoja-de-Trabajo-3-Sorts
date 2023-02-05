@@ -1,5 +1,3 @@
-import java.util.Comparator;
-import java.util.Random;
 import java.util.Scanner;
 
 public class PrincipalSort<T> {
@@ -19,12 +17,12 @@ public class PrincipalSort<T> {
         }
 
         //Gnome Sort
-        // System.out.println("\nOrdenado los datos del arreglo con GnomeSort...");
-        // lista.gnomeSort(datos);
-        // System.out.println("Los datos han sido arreglados");
-        // for (int i = 0; i < datos.length; i++){
-        //     System.out.println(datos[i]);
-        // }
+        System.out.println("\nOrdenado los datos del arreglo con GnomeSort...");
+        lista.gnomeSort(datos);
+        System.out.println("Los datos han sido arreglados");
+        for (int i = 0; i < datos.length; i++){
+            System.out.println(datos[i]);
+        }
 
         System.out.println("Presione enter para usar el siguiente sort");
         String next = teclado.nextLine();
@@ -41,37 +39,34 @@ public class PrincipalSort<T> {
         next = teclado.nextLine();
 
         //Quick Sort
-        // Sorts<Integer> listaQuick = new Sorts<Integer>();
-        // System.out.println("\nOrdenado los datos del arreglo con QuickSort...");
-        // listaQuick.quickSort(datos, datos[0], datos[datos.length-1]);
-        // System.out.println("Los datos han sido arreglados");
-        // for (int i = 0; i < datos.length; i++){
-        //     System.out.println(datos[i]);
-        // }
+        System.out.println("\nOrdenado los datos del arreglo con QuickSort...");
+        lista.quickSort(datos, 0, datos.length-1);
+        System.out.println("Los datos han sido arreglados");
+        for (int i = 0; i < datos.length; i++){
+            System.out.println(datos[i]);
+        }
 
         System.out.println("Presione enter para usar el siguiente sort");
         next = teclado.nextLine();
 
         //Radix Sort
-        // Sorts<Integer> listaRadix = new Sorts<Integer>();
-        // System.out.println("\nOrdenado los datos del arreglo con RadixSort...");
-        // listaRadix.radixSort(datos, datos.length-1);
-        // System.out.println("Los datos han sido arreglados");
-        // for (int i = 0; i < datos.length; i++){
-        //     System.out.println(datos[i]);
-        // }
+        System.out.println("\nOrdenado los datos del arreglo con RadixSort...");
+        Sorts.radixSort(datos);
+        System.out.println("Los datos han sido arreglados");
+        for (int i = 0; i < datos.length; i++){
+            System.out.println(datos[i]);
+        }
 
         System.out.println("Presione enter para usar el siguiente sort");
         next = teclado.nextLine();
 
         //Selection Sort
-        // Sorts<Integer> listaSelection = new Sorts<Integer>();
-        // System.out.println("\nOrdenado los datos del arreglo con SelectionSort...");
-        // listaSelection.selectionSort(datos);
-        // System.out.println("Los datos han sido arreglados");
-        // for (int i = 0; i < datos.length; i++){
-        //     System.out.println(datos[i]);
-        // }
+        System.out.println("\nOrdenado los datos del arreglo con SelectionSort...");
+        Sorts.selectionSort(datos);
+        System.out.println("Los datos han sido arreglados");
+        for (int i = 0; i < datos.length; i++){
+            System.out.println(datos[i]);
+        }
         
     }
 }

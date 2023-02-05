@@ -1,6 +1,5 @@
-import java.util.Comparator;
-
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Sorts<T> {
     
@@ -8,32 +7,32 @@ public class Sorts<T> {
      * Implementación de QuickSort
      * Impelmentación obtenida de Baeldung.com 
      */
-    public void quickSort(Integer[] myArray, int begin, int end){
+    public void quickSort(int[] datos, int begin, int end){
         if (begin < end){
-            int partitionIndex = partition(myArray, begin, end);
+            int partitionIndex = partition(datos, begin, end);
 
-            quickSort(myArray, begin, partitionIndex-1);
-            quickSort(myArray, partitionIndex+1, end);
+            quickSort(datos, begin, partitionIndex-1);
+            quickSort(datos, partitionIndex+1, end);
         }
     }
 
-    public int partition(Integer[] myArray, int begin, int end){
-        int pivot = myArray[end];
+    public int partition(int[] datos, int begin, int end){
+        int pivot = datos[end];
         int i = (begin-1);
 
         for (int j = begin; j < end; j++){
-            if (myArray[j] <= pivot){
+            if (datos[j] <= pivot){
                 i++;
 
-                int swapTemp = myArray[i];
-                myArray[i] = myArray[j];
-                myArray[j] = swapTemp;
+                int swapTemp = datos[i];
+                datos[i] = datos[j];
+                datos[j] = swapTemp;
             }
         }
 
-        int swapTemp = myArray[i+1];
-        myArray[i+1] = myArray[end];
-        myArray[end] = swapTemp;
+        int swapTemp = datos[i+1];
+        datos[i+1] = datos[end];
+        datos[end] = swapTemp;
 
         return i + 1;
     }
@@ -41,26 +40,26 @@ public class Sorts<T> {
     /**
      * Implementación de GnomeSort
      * Implementación obtenida de OpenGenus IQ
-     * @param myArray
+     * @param datos
      */
-    public void gnomeSort(Integer[] myArray){
+    public void gnomeSort(int[] datos){
         int i = 1;
-        int n = myArray.length;
+        int n = datos.length;
 
         while (i < n){
-            if (i == 0 || myArray[i - 1] <= myArray[i]){
+            if (i == 0 || datos[i - 1] <= datos[i]){
                 i++;
             } else {
-                int tmp = myArray[i];
-                myArray[i] = myArray[i - 1];
-                myArray[--i] = tmp;
+                int tmp = datos[i];
+                datos[i] = datos[i - 1];
+                datos[--i] = tmp;
             }
         }
     }
 
     /**
      * Implementación de MergeSort
-     * Implementación obtenida de geeksforgeeks.org
+     * Implementación obtenida de educative.io
      */
     public static void merge(int[] left_arr,int[] right_arr, int[] arr,int left_size, int right_size) {
         int i=0,l=0,r=0;
@@ -102,112 +101,64 @@ public class Sorts<T> {
 
         merge(left_arr,right_arr,arr,mid,len-mid);
     }
-    // public void merge(Integer[] myArray, Integer[] l, Integer[] r, int left, int right){
-    //     int i = 0, j = 0, k = 0;
-    //     while (i < left && j < right){
-    //         if (l[i] <= r[j]) {
-    //             myArray[k++] = l[i++];
-    //         } else {
-    //             myArray[k++] = l[i++];
-    //         }
-    //     }
-
-    //     while (i < left) {
-    //         myArray[k++] = l[i++];
-    //     }
-    //     while (j < right) {
-    //         myArray[k++] = r[j++];
-    //     }
-    // }
-
-    // public void mergeSort(Integer[] myArray, int n){
-    //     if (n < 2){
-    //         return;
-    //     }
-    //     int mid = n / 2;
-    //     Integer[] l = new Integer[mid];
-    //     Integer[] r = new Integer[n - mid];
-
-    //     for (int i = 0; i < mid; i++){
-    //         l[i] = myArray[i];
-    //     }
-    //     for (int i = mid; i < n; i++){
-    //         r[i - mid] = myArray[i];
-    //     }
-    //     mergeSort(l, mid);
-    //     mergeSort(r, n - mid);
-
-    //     merge(myArray, l, r, mid, n - mid);
-    // }
 
     /**
      * Implementación de RadixSort
-     * Implementación obtenida de Programiz.com
+     *Implementación obtenida de java67.com
      */
-    public void countingSort(Integer[] myArray, int size, int place){
-        int array;
-        int i;
-        int[] output = new int[size + 1];
-        int max = myArray[0];
-        for (i = 1; i < size; i++) {
-            if (myArray[i] > max)
-                max = myArray[i];
+    public static void radixSort(int[] input) {
+        final int RADIX = 10;
+
+        List<Integer>[] bucket = new ArrayList[RADIX];
+
+        for (int i = 0; i < bucket.length; i++) {
+            bucket[i] = new ArrayList<Integer>();
         }
 
-        int[] count = new int[max + 1];
+        boolean maxLength = false;
+        int tmp = -1, placement = 1;
+        while (!maxLength) {
+            maxLength = true;
 
-        for (i = 0; i < max; i++)
-            count[i] = 0;
+            for (Integer i : input) {
+                tmp = i / placement;
+                bucket[tmp % RADIX].add(i);
+                if (maxLength && tmp > 0) {
+                    maxLength = false;
+                }
+            }
 
-        for (i = 0; i < size; i++)
-            count[(myArray[i]/place) % 10]++;
-        
-        for (i = size - 1; i >= 0; i--) {
-            output[count[(myArray[i] / place) % 10] - 1] = myArray[i];
-            count[(myArray[i]/ place) % 10]--;
+            int a = 0;
+            for (int b = 0; b < RADIX; b++) {
+                for (Integer i : bucket[b]) {
+                    input[a++] = i;
+                }
+                bucket[b].clear();
+            }
+
+            placement *= RADIX;
         }
-
-        for (i= 0; i < size; i++)
-            array = myArray[i];
-            array = output[i];
     }
 
-    public int getMax(Integer[] myArray, int n) {
-        int max = myArray[0];
-        for (int i = 1; i < n; i++)
-            if (myArray[i] > max)
-                max = myArray[i];
-            return max;
-    }
-
-    public void radixSort(Integer[] myArray, int size){
-        int max = getMax(myArray, size);
-
-        for (int place = 1; max / place > 0; place *= 10)
-            countingSort(myArray, size, place);
-    }
-    
 
     /**
      * Implementación de SelectionSort
      * Implementación obtenida de edureka.co
      * 
      */
-    public void selectionSort(Integer[] myArray){
-        int n = myArray.length;
-        for (int i = 0; i < n-1; i++){
-            int min_element = i;
-            for (int j = i+1; j< n; j++){
-                if (myArray[j] < myArray[min_element])
-                    min_element = j;
-                
-                int array = myArray[min_element]; 
-                int Iarray = myArray[i];  
-                int temp = array;
-                array = Iarray;
-                Iarray = temp;
+    public static void selectionSort(final int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minElementIndex = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[minElementIndex] > arr[j]) {
+                    minElementIndex = j;
+                }
             }
-
+            if (minElementIndex != i) {
+                int temp = arr[i];
+                arr[i] = arr[minElementIndex];
+                arr[minElementIndex] = temp;
+            }
         }
     }
 }
