@@ -1,8 +1,12 @@
+import java.util.Comparator;
+
+import java.util.Vector;
+
 public class Sorts<T> {
     
     /**
      * Implementación de QuickSort
-     * Impelmentación del repositorio de GitHub
+     * Impelmentación obtenida del repositorio de GitHub
      * @param myArray
      * @param inf
      * @param sup
@@ -44,7 +48,7 @@ public class Sorts<T> {
 
     /**
      * Implementación de GnomeSort
-     * Implementación de OpenGenus IQ
+     * Implementación obtenida de OpenGenus IQ
      * @param myArray
      */
     public void gnomeSort(T[] myArray){
@@ -52,10 +56,10 @@ public class Sorts<T> {
         int n = myArray.length;
 
         while (i < n){
-            if (i == 0 || myArray[i - 1].compareTo(myArray[i]) <= 0){
+            if (i == 0 || Integer.valueOf((String) myArray[i - 1]) <= Integer.valueOf((String) myArray[i])){
                 i++;
             } else {
-                int tmp = myArray[i];
+                T tmp = myArray[i];
                 myArray[i] = myArray[i - 1];
                 myArray[--i] = tmp;
             }
@@ -64,7 +68,7 @@ public class Sorts<T> {
 
     /**
      * Implementación de MergeSort
-     * Implementación de JavaStructures
+     * Implementación obtenida de JavaStructures
      * @param myArray
      * @param temp
      * @param low
@@ -77,43 +81,82 @@ public class Sorts<T> {
         int di = middle;
 
         while (ti < middle && di <= high){
-            if (myArray[di].compareTo(temp[ti]) < 0) {
-                myArray[ri++] = data[di++];
+            if (Integer.valueOf((String) myArray[di]) < Integer.valueOf((String) myArray[ti])){
+                myArray[ri++] = myArray[di++];
             } else {
-                data[ri++] = temp[ti++];
+                myArray[ri++] = temp[ti++];
             }
         }
     }
 
     /**
      * Implementación de RadixSort
-     * Implementación de javaStructures
-     * @param myArray
-     * @param d
+     * Implementación obtenida de Programiz.com
      */
-    public void radixSort(T[] myArray, int d) {
-        int i,j;
-        int value;
-
-        Vector<Vector<Integer>> bucket = new Vector<Vector<Integer>>(10);
-        bucket.setSize(10);
-
-        for (j = 0; j < 10; j++) bucket.set(j ,new Vector<Integer>());
-
-        int n = myArray.length;
-        for (i = 0; i < n; i++){
-            value = myArray[i];
-            j = digit(value, d);
-            buckte.get(j).add(value);
+    public void countingSort(T[] myArray, int size, int place){
+        int array;
+        int i;
+        int[] output = new int[size + 1];
+        int max = Integer.valueOf((String) myArray[0]);
+        for (i = 1; i < size; i++) {
+            if (Integer.valueOf((String) myArray[i]) > max)
+                max = Integer.valueOf((String) myArray[i]);
         }
 
-        i = n;
-        for (j = 9; j >= 0; j--) {
-            while(!bucket.get(j).isEmpty()){
-                i--;
-                value = bucket.get(j).remove();
-                myArray[i] = value;
+        int[] count = new int[max + 1];
+
+        for (i = 0; i < max; i++)
+            count[i] = 0;
+
+        for (i = 0; i < size; i++)
+            count[(Integer.valueOf((String) myArray[i])/place) % 10]++;
+        
+        for (i = size - 1; i >= 0; i--) {
+            output[count[(Integer.valueOf((String) myArray[i]) / place) % 10] - 1] = Integer.valueOf((String) myArray[i]);
+            count[(Integer.valueOf((String) myArray[i])/ place) % 10]--;
+        }
+
+        for (i= 0; i < size; i++)
+            array = Integer.valueOf((String) myArray[i]);
+            array = output[i];
+    }
+
+    public int getMax(T[] myArray, int n) {
+        int max = Integer.valueOf((String) myArray[0]);
+        for (int i = 1; i < n; i++)
+            if (Integer.valueOf((String) myArray[i]) > max)
+                max = Integer.valueOf((String) myArray[i]);
+            return max;
+    }
+
+    public void radixSort(T[] myArray, int size){
+        int max = getMax(myArray, size);
+
+        for (int place = 1; max / place > 0; place *= 10)
+            countingSort(myArray, size, place);
+    }
+    
+
+    /**
+     * Implementación de SelectionSort
+     * Implementación obtenida de edureka.co
+     * 
+     */
+    public void selectionSort(T[] myArray){
+        int n = myArray.length;
+        for (int i = 0; i < n-1; i++){
+            int min_element = i;
+            for (int j = i+1; j< n; j++){
+                if (Integer.valueOf((String) myArray[j]) < Integer.valueOf((String) myArray[min_element]))
+                    min_element = j;
+                
+                int array = Integer.valueOf((String) myArray[min_element]); 
+                int Iarray = Integer.valueOf((String) myArray[i]);  
+                int temp = array;
+                array = Iarray;
+                Iarray = temp;
             }
+
         }
     }
 }
